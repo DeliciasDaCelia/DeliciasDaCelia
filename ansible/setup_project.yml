@@ -34,3 +34,13 @@
             name:
                 - nodejs
                 - npm
+
+      - name: Install Docker Compose
+        apt:
+            name: docker-compose
+            state: present
+
+      - name: Install Yarn globally using npm
+        npm:
+            name: yarn
+            global: yes
