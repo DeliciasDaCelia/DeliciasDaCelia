@@ -22,11 +22,11 @@ jobs:
               with:
                   node-version: "14" # specify your Node.js version
 
+            - name: Lint project
+              run: npm run lint
+
             - name: Install dependencies
               run: npm install
 
             - name: Build project
               run: npm run build
-
-            # - name: Test project
-            #   run: npm test
