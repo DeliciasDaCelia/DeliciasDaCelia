@@ -1,9 +1,13 @@
-name: Deploy to Azure VM
+# .github/workflows/ci.yml
+name: CI
 
 on:
     push:
         branches:
-            - main # Adjust this based on your branch name
+            - main # adjust based on your default branch name
+    pull_request:
+        branches:
+            - main # adjust based on your default branch name
 
 jobs:
     deploy:
