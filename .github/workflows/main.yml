@@ -7,7 +7,7 @@ on:
 
 jobs:
     deploy:
-        runs-on: vm-prod
+        runs-on: [self-hosted, vm-prod] # This will target runners with the tag "vm-prod"
 
         steps:
             - name: Checkout code
