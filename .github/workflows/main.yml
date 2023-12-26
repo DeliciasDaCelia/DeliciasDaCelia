@@ -10,24 +10,21 @@ on:
             - main # adjust based on your default branch name
 
 jobs:
-    build-and-test:
-        runs-on:
-            - vm-prod
+    deploy:
+        runs-on: [self-hosted, vm-prod] # This will target runners with the tag "vm-prod"
 
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
 
-            - name: Set up Node.js
-              uses: actions/setup-node@v2
+            - name: SSH and deploy
+              uses: appleboy/ssh-action@master
               with:
-                  node-version: "14" # specify your Node.js version
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Build project
-              run: npm run build
-
-            # - name: Lint project
-            #   run: npm run lint
+                  host: ${{ secrets.AZURE_VM_IP }} # Azure VM IP address
+                  username: ${{ secrets.AZURE_VM_USERNAME }} # Azure VM username
+                  key: ${{ secrets.AZURE_VM_SSH_KEY }} # Azure VM SSH private key
+                  script: |
+                      cd /home/rui/delicias-da-celia
+                      docker-compose down
+                      docker-compose pull
+                      docker-compose up -d
