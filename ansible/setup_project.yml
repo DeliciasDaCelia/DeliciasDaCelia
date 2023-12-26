@@ -40,6 +40,12 @@
             name: docker-compose
             state: present
 
+      # Installer Docker.io
+      - name: Install Docker.io
+        apt:
+            name: docker.io
+            state: present
+
       - name: Install Yarn globally using npm
         npm:
             name: yarn

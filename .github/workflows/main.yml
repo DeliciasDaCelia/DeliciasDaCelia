@@ -17,14 +17,20 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v2
 
-            - name: SSH and deploy
+            - name: Build and push Docker image
+              run: |
+                  docker-compose build
+                  docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+                  docker-compose push
+
+            - name: SSH to Azure VM and deploy
               uses: appleboy/ssh-action@master
               with:
-                  host: ${{ secrets.AZURE_VM_IP }} # Azure VM IP address
-                  username: ${{ secrets.AZURE_VM_USERNAME }} # Azure VM username
-                  key: ${{ secrets.AZURE_VM_SSH_KEY }} # Azure VM SSH private key
+                  host: ${{ secrets.AZURE_VM_IP }}
+                  username: ${{ secrets.AZURE_VM_USERNAME }}
+                  key: ${{ secrets.AZURE_VM_SSH_KEY }}
+                  port: ${{ secrets.AZURE_VM_PORT }}
                   script: |
-                      cd /home/rui/delicias-da-celia
-                      docker-compose down
+                      cd /home/{{ secrets.AZURE_VM_USERNAME }}/delicias-da-celia
                       docker-compose pull
                       docker-compose up -d
